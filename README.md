@@ -58,7 +58,7 @@ Set these values in `backend/.env` (never in a frontend `VITE_` variable):
 
 ```dotenv
 GEMINI_API_KEY=your_google_ai_studio_api_key
-GEMINI_MODEL=gemini-2.5-flash
+GEMINI_MODEL=gemini-3.8-flash
 ```
 
 Install backend dependencies with `python -m pip install -r requirements.txt`, then restart FastAPI. Existing prediction requests continue to work without Gemini configured.
