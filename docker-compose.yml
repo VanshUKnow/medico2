@@ -1,0 +1,38 @@
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: medico
+      POSTGRES_USER: medico
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in your deployment environment}
+    volumes:
+      - medico_db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U medico -d medico"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+  api:
+    build: ./backend
+    environment:
+      ENVIRONMENT: production
+      SECRET_KEY: ${SECRET_KEY:?Set SECRET_KEY}
+      REGISTRATION_INVITE_CODE: ${REGISTRATION_INVITE_CODE:?Set REGISTRATION_INVITE_CODE}
+      DATABASE_URL: postgresql+psycopg://medico:${POSTGRES_PASSWORD}@db:5432/medico
+      CORS_ORIGINS: ${CORS_ORIGINS:?Set CORS_ORIGINS}
+      MODEL_PATH: ./models/xgb_model.pkl
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      GEMINI_MODEL: ${GEMINI_MODEL:-gemini-2.5-flash}
+    ports: ["8000:8000"]
+    depends_on:
+      db:
+        condition: service_healthy
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        VITE_API_URL: ${VITE_API_URL:?Set VITE_API_URL to the public API URL}
+    ports: ["8080:80"]
+    depends_on: [api]
+volumes:
+  medico_db:
