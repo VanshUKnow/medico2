@@ -57,7 +57,7 @@ To run the frontend locally, install dependencies in `frontend/` with `npm insta
 Set these values in `backend/.env` (never in a frontend `VITE_` variable):
 
 ```dotenv
-GEMINI_API_KEY=your_google_ai_studio_api_key
+GEMINI_API_KEY=google_ai_studio_api_key
 GEMINI_MODEL=gemini-3.8-flash
 ```
 
