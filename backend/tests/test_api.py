@@ -1,4 +1,3 @@
-# API tests are intentionally minimal; set required environment variables before running pytest.
 from fastapi.testclient import TestClient
 from app.main import app
 
